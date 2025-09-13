@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: #4b5563;
+  }
+  
+  body {
+    background-color: #111827;
+    color: #f9fafb;
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    background-attachment: fixed;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .glass {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .glass-dark {
+    background-color: rgba(31, 41, 55, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(55, 65, 81, 0.5);
+  }
+  
+  .glow-effect {
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+  
+  .gradient-text {
+    background: linear-gradient(to right, #60a5fa, #c084fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+    transform: scale(1);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.25);
+  }
+  
+  .btn-secondary {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #60a5fa;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+  }
+  
+  .btn-secondary:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: rgba(96, 165, 250, 0.5);
+  }
+  
+  .input-field {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(75, 85, 99, 0.5);
+    color: #f3f4f6;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+    background-color: rgba(31, 41, 55, 0.3);
+  }
+  
+  .input-field::placeholder {
+    color: #9ca3af;
+  }
+  
+  .input-field:focus {
+    border-color: rgba(59, 130, 246, 0.5);
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+  }
+  
+  .card {
+    background-color: rgba(31, 41, 55, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(55, 65, 81, 0.5);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: all 0.3s;
+  }
+  
+  .card:hover {
+    background-color: rgba(31, 41, 55, 0.6);
+  }
+  
+  .task-card {
+    background-color: rgba(31, 41, 55, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(55, 65, 81, 0.5);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: all 0.3s;
+  }
+  
+  .task-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 50;
+    background-color: #111827;
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(55, 65, 81, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    height: 4rem;
+  }
+
+  .navbar-content {
+    padding: 0.75rem 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .navbar-content {
+      padding: 0.75rem 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .navbar-content {
+      padding: 0.75rem 3rem;
+    }
+  }
+}
