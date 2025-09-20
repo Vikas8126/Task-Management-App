@@ -15,7 +15,7 @@ app.use(helmet());
 // CORS configuration for development and production
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CORS_ORIGIN || 'https://your-frontend-domain.vercel.app'
+    ? process.env.CORS_ORIGIN || true // Allow all origins in production for now
     : true, // Allow all origins in development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

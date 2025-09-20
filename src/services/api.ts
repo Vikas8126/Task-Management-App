@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'https://task-management-app-4njn.onrender.com/api';
 
 interface Project {
   id: string;
