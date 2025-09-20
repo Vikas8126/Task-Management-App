@@ -1,5 +1,5 @@
 import React from "react";
-import { Search, CheckCircle, Bell } from "lucide-react";
+import { Search, Bell } from "lucide-react";
 import { useNavbar } from "./hooks/useNavbar";
 import "./index.css";
 
@@ -52,13 +52,8 @@ const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Stats and Controls */}
+        {/* Controls */}
         <div className="navbar-stats">
-          <div className="navbar-stats-badge">
-            <CheckCircle style={{ width: '1rem', height: '1rem', marginRight: '0.375rem' }} />
-            {completedTasks}/{totalTasks}
-          </div>
-          
           <button className="navbar-notification-btn">
             <Bell style={{ width: '1.25rem', height: '1.25rem', color: '#6b7280' }} />
             {totalTasks > 0 && (

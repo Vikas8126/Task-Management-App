@@ -5,7 +5,7 @@ export class TaskService {
   // Get all tasks
   static async getAllTasks(): Promise<ITask[]> {
     try {
-      const tasks = await Task.find().populate('projectId').sort({ createdAt: -1 });
+      const tasks = await Task.find().sort({ createdAt: -1 });
       return tasks;
     } catch (error) {
       throw new Error(`Failed to fetch tasks: ${error}`);
@@ -25,7 +25,7 @@ export class TaskService {
   // Get task by ID
   static async getTaskById(id: string): Promise<ITask | null> {
     try {
-      const task = await Task.findById(id).populate('projectId');
+      const task = await Task.findById(id);
       return task;
     } catch (error) {
       throw new Error(`Failed to fetch task: ${error}`);
@@ -33,11 +33,11 @@ export class TaskService {
   }
 
   // Create new task
-  static async createTask(
+  static   async createTask(
     title: string,
     description: string,
     projectId: string,
-    status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed' = 'backlog'
+    status: 'new' | 'in-progress' | 'blocked' | 'completed' = 'new'
   ): Promise<ITask> {
     try {
       // Verify project exists
@@ -66,7 +66,7 @@ export class TaskService {
     updates: Partial<{
       title: string;
       description: string;
-      status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed';
+      status: 'new' | 'in-progress' | 'blocked' | 'completed';
       projectId: string;
     }>
   ): Promise<ITask | null> {
@@ -102,7 +102,7 @@ export class TaskService {
 
   // Get tasks by status
   static async getTasksByStatus(
-    status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed'
+    status: 'new' | 'in-progress' | 'blocked' | 'completed'
   ): Promise<ITask[]> {
     try {
       const tasks = await Task.find({ status }).populate('projectId').sort({ createdAt: -1 });
@@ -115,7 +115,7 @@ export class TaskService {
   // Update task status
   static async updateTaskStatus(
     id: string,
-    status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed'
+    status: 'new' | 'in-progress' | 'blocked' | 'completed'
   ): Promise<ITask | null> {
     try {
       const task = await Task.findByIdAndUpdate(

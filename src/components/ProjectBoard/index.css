@@ -1,8 +1,6 @@
 /* ProjectBoard Styles */
 .project-board-container {
-  padding-top: 6rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 2rem 1rem;
   min-height: 100vh;
 }
 

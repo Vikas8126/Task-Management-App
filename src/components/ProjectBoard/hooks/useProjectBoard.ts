@@ -11,7 +11,7 @@ interface Task {
   id: string;
   title: string;
   description: string;
-  status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed';
+  status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
   createdAt: Date;
   updatedAt: Date;

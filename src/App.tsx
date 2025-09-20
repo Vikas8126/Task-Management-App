@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import ProjectBoard from './components/ProjectBoard/ProjectBoard';
+import ProjectDetail from './components/ProjectDetail/ProjectDetail';
 import AddProjectModal from './components/AddProjectModal/AddProjectModal';
 import AddTaskModal from './components/AddTaskModal/AddTaskModal';
 import NotificationModal from './components/NotificationModal/NotificationModal';
@@ -19,13 +21,26 @@ interface Task {
   id: string;
   title: string;
   description: string;
-  status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed';
+  status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
+// Main App Component with Routing
 function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/projects/:projectId" element={<ProjectDetail />} />
+      </Routes>
+    </Router>
+  );
+}
+
+// Home Page Component
+function HomePage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
@@ -91,6 +106,7 @@ function App() {
     setShowAddTaskModal(true);
   };
 
+
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(task => task.status === 'completed').length;
 
@@ -119,13 +135,12 @@ function App() {
         onSearch={(query) => console.log('Search:', query)} 
       />
       
-      <ProjectBoard
-        projects={projects}
-        tasks={tasks}
-        onProjectClick={(projectId) => console.log('Project clicked:', projectId)}
-        onAddProject={() => setShowAddProjectModal(true)}
-        onAddTask={handleAddTask}
-      />
+          <ProjectBoard
+            projects={projects}
+            tasks={tasks}
+            onAddProject={() => setShowAddProjectModal(true)}
+            onAddTask={handleAddTask}
+          />
 
       <AddProjectModal
         isOpen={showAddProjectModal}
@@ -158,6 +173,7 @@ function App() {
         }}
         onClose={() => setShowNotification(false)}
       />
+
     </div>
   );
 }

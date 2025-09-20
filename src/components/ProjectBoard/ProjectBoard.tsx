@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useProjectBoard } from './hooks/useProjectBoard';
 import './index.css';
 
@@ -15,7 +16,7 @@ interface Task {
   id: string;
   title: string;
   description: string;
-  status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed';
+  status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -24,7 +25,6 @@ interface Task {
 interface ProjectBoardProps {
   projects: Project[];
   tasks: Task[];
-  onProjectClick: (projectId: string) => void;
   onAddProject: () => void;
   onAddTask: () => void;
 }
@@ -32,10 +32,10 @@ interface ProjectBoardProps {
 const ProjectBoard: React.FC<ProjectBoardProps> = ({
   projects,
   tasks,
-  onProjectClick,
   onAddProject,
   onAddTask,
 }) => {
+  const navigate = useNavigate();
   const { getProjectStats } = useProjectBoard(projects, tasks);
 
   return (
@@ -74,7 +74,7 @@ const ProjectBoard: React.FC<ProjectBoardProps> = ({
               return (
                 <div
                   key={project.id}
-                  onClick={() => onProjectClick(project.id)}
+                  onClick={() => navigate(`/projects/${project.id}`)}
                   className="project-board-card"
                 >
                   {/* Left Side - Project Info */}

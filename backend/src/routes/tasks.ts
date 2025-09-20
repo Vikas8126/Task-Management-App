@@ -84,7 +84,7 @@ router.post('/', async (req: Request, res: Response) => {
       title.trim(),
       description?.trim() || '',
       projectId,
-      status || 'backlog'
+      status || 'new'
     );
 
     return res.status(201).json({

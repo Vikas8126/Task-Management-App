@@ -4,7 +4,7 @@ export interface ITask extends Document {
   _id: string;
   title: string;
   description: string;
-  status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed';
+  status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -26,8 +26,8 @@ const TaskSchema: Schema = new Schema(
     status: {
       type: String,
       required: true,
-      enum: ['backlog', 'pending', 'in-progress', 'review', 'completed'],
-      default: 'backlog',
+      enum: ['new', 'in-progress', 'blocked', 'completed'],
+      default: 'new',
     },
     projectId: {
       type: Schema.Types.ObjectId,

@@ -1,4 +1,5 @@
 import React from 'react';
+import { AlertTriangle } from 'lucide-react';
 import './index.css';
 
 interface Project {
@@ -14,7 +15,7 @@ interface Task {
   id: string;
   title: string;
   description: string;
-  status: 'backlog' | 'pending' | 'in-progress' | 'review' | 'completed';
+  status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
   createdAt: Date;
   updatedAt: Date;
@@ -22,8 +23,8 @@ interface Task {
 
 interface DeleteConfirmationModalProps {
   isOpen: boolean;
-  project: Project;
-  associatedTasks: Task[];
+  project: Project | null;
+  tasks: Task[];
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -31,88 +32,74 @@ interface DeleteConfirmationModalProps {
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   isOpen,
   project,
-  associatedTasks,
+  tasks,
   onConfirm,
   onCancel,
 }) => {
-  if (!isOpen) return null;
+  if (!isOpen || !project) return null;
 
-  const taskCount = associatedTasks.length;
+  const projectTasks = tasks.filter(task => task.projectId === project.id);
+  const completedTasks = projectTasks.filter(task => task.status === 'completed').length;
+  const inProgressTasks = projectTasks.filter(task => task.status === 'in-progress').length;
 
   return (
-    <div className="delete-confirmation-modal-overlay" onClick={onCancel}>
-      <div className="delete-confirmation-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="delete-confirmation-modal-header">
-          <span className="delete-confirmation-modal-icon">⚠️</span>
-          <h3 className="delete-confirmation-modal-title">Delete Project</h3>
+    <div className="delete-modal-overlay">
+      <div className="delete-modal">
+        <div className="delete-modal-header">
+          <div className="delete-modal-icon">
+            <AlertTriangle size={24} />
+          </div>
+          <h2 className="delete-modal-title">Delete Project</h2>
         </div>
 
-        <p className="delete-confirmation-modal-message">
-          Are you sure you want to delete this project? This action cannot be undone.
-        </p>
-
-        {/* Project Info */}
-        <div className="delete-confirmation-modal-project-info">
-          <div className="delete-confirmation-modal-project-header">
-            <div
-              className="delete-confirmation-modal-project-color"
-              style={{ backgroundColor: project.color }}
-            />
-            <span className="delete-confirmation-modal-project-name">
-              {project.name}
-            </span>
-          </div>
-          <p className="delete-confirmation-modal-project-description">
-            {project.description}
+        <div className="delete-modal-content">
+          <p className="delete-modal-warning">
+            Are you sure you want to delete <strong>"{project.name}"</strong>?
           </p>
+          
+          <p className="delete-modal-description">
+            This action cannot be undone. All tasks associated with this project will also be deleted.
+          </p>
+
+          {projectTasks.length > 0 && (
+            <div className="delete-modal-tasks-summary">
+              <h3 className="delete-modal-tasks-title">Tasks that will be deleted:</h3>
+              <div className="delete-modal-tasks-stats">
+                <span className="delete-modal-task-stat">
+                  <span className="delete-modal-task-count">{projectTasks.length}</span>
+                  <span className="delete-modal-task-label">Total Tasks</span>
+                </span>
+                <span className="delete-modal-task-stat">
+                  <span className="delete-modal-task-count">{completedTasks}</span>
+                  <span className="delete-modal-task-label">Completed</span>
+                </span>
+                <span className="delete-modal-task-stat">
+                  <span className="delete-modal-task-count">{inProgressTasks}</span>
+                  <span className="delete-modal-task-label">In Progress</span>
+                </span>
+              </div>
+            </div>
+          )}
+
+          {projectTasks.length === 0 && (
+            <div className="delete-modal-empty-state">
+              <p className="delete-modal-empty-text">This project has no tasks.</p>
+            </div>
+          )}
         </div>
 
-        {/* Associated Tasks Warning */}
-        {taskCount > 0 && (
-          <div className="delete-confirmation-modal-tasks-section">
-            <div className="delete-confirmation-modal-warning">
-              <p className="delete-confirmation-modal-warning-text">
-                🗑️ This will also delete {taskCount} associated task{taskCount !== 1 ? 's' : ''}:
-              </p>
-            </div>
-
-            <div className="delete-confirmation-modal-tasks-list">
-              {associatedTasks.map((task) => (
-                <div key={task.id} className="delete-confirmation-modal-task-item">
-                  <div className="delete-confirmation-modal-task-info">
-                    <div className="delete-confirmation-modal-task-title">
-                      {task.title}
-                    </div>
-                    <div className="delete-confirmation-modal-task-status">
-                      Status: {task.status.replace('-', ' ')}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {taskCount === 0 && (
-          <div className="delete-confirmation-modal-warning">
-            <p className="delete-confirmation-modal-warning-text">
-              ℹ️ This project has no associated tasks.
-            </p>
-          </div>
-        )}
-
-        <div className="delete-confirmation-modal-actions">
-          <button
+        <div className="delete-modal-actions">
+          <button 
+            className="delete-modal-cancel-btn"
             onClick={onCancel}
-            className="delete-confirmation-modal-cancel-btn"
           >
             Cancel
           </button>
-          <button
+          <button 
+            className="delete-modal-confirm-btn"
             onClick={onConfirm}
-            className="delete-confirmation-modal-delete-btn"
           >
-            Delete Project {taskCount > 0 && `& ${taskCount} Task${taskCount !== 1 ? 's' : ''}`}
+            Delete Project
           </button>
         </div>
       </div>
