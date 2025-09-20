@@ -11,11 +11,9 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({
   totalTasks,
-  completedTasks,
   onSearch,
 }) => {
   const {
-    isSearchFocused,
     searchQuery,
     handleSearchFocus,
     handleSearchBlur,

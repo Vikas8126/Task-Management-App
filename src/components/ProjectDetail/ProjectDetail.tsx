@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import { projectAPI, taskAPI } from '../../services/api';
@@ -110,7 +110,11 @@ function ProjectDetail() {
   if (loading) {
     return (
       <div className="project-detail-loading">
-        <Navbar totalTasks={0} completedTasks={0} />
+        <Navbar 
+          totalTasks={0} 
+          completedTasks={0} 
+          onSearch={(query) => console.log('Search:', query)}
+        />
         <div className="loading-container">
           <div className="loading-spinner"></div>
           <p>Loading project...</p>
@@ -122,7 +126,11 @@ function ProjectDetail() {
   if (!project) {
     return (
       <div className="project-detail-error">
-        <Navbar totalTasks={0} completedTasks={0} />
+        <Navbar 
+          totalTasks={0} 
+          completedTasks={0} 
+          onSearch={(query) => console.log('Search:', query)}
+        />
         <div className="error-container">
           <h2>Project not found</h2>
           <button 
@@ -147,7 +155,8 @@ function ProjectDetail() {
     <div className="project-detail">
       <Navbar 
         totalTasks={tasks.length} 
-        completedTasks={getTasksByStatus('completed').length} 
+        completedTasks={getTasksByStatus('completed').length}
+        onSearch={(query) => console.log('Search:', query)} 
       />
       
       <div className="project-detail-container">

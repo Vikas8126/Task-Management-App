@@ -17,7 +17,7 @@ interface Task {
   updatedAt: Date;
 }
 
-export const useProjectBoard = (projects: Project[], tasks: Task[]) => {
+export const useProjectBoard = (_projects: Project[], tasks: Task[]) => {
   const getTaskCountForProject = (projectId: string): number => {
     return tasks.filter(task => task.projectId === projectId).length;
   };
