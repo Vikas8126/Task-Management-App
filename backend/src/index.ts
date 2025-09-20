@@ -12,14 +12,18 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(helmet());
 
-// More permissive CORS for development
-app.use(cors({
-  origin: true, // Allow all origins in development
+// CORS configuration for development and production
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.CORS_ORIGIN || 'https://your-frontend-domain.vercel.app'
+    : true, // Allow all origins in development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   optionsSuccessStatus: 200
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
