@@ -17,6 +17,7 @@ interface Task {
   description: string;
   status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
+  dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }

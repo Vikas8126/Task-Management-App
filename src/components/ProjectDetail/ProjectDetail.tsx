@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, Calendar, Clock } from 'lucide-react';
 import { projectAPI, taskAPI } from '../../services/api';
+import { isTaskPastDue, formatDate, getRelativeDate } from '../../utils/dateUtils';
 import Navbar from '../Navbar/Navbar';
 import AddTaskModal from '../AddTaskModal/AddTaskModal';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
@@ -22,6 +23,7 @@ interface Task {
   description: string;
   status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
+  dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -59,12 +61,12 @@ function ProjectDetail() {
     }
   };
 
-  const addTask = async (title: string, description: string, taskProjectId?: string) => {
+  const addTask = async (title: string, description: string, taskProjectId?: string, dueDate?: Date) => {
     const targetProjectId = taskProjectId || projectId;
     if (!targetProjectId) return;
     
     try {
-      const newTask = await taskAPI.create(title, description, targetProjectId);
+      const newTask = await taskAPI.create(title, description, targetProjectId, dueDate);
       setTasks([...tasks, newTask]);
       setShowAddTaskModal(false);
     } catch (error) {
@@ -214,7 +216,12 @@ function ProjectDetail() {
                 {getTasksByStatus(column.status).map(task => (
                   <div key={task.id} className="task-card">
                     <div className="task-header">
-                      <h4 className="task-title">{task.title}</h4>
+                      <div className="task-title-section">
+                        <h4 className="task-title">{task.title}</h4>
+                        {isTaskPastDue(task) && (
+                          <span className="past-due-tag">Past Due</span>
+                        )}
+                      </div>
                       <button 
                         className="delete-task-btn"
                         onClick={() => deleteTask(task.id)}
@@ -223,6 +230,27 @@ function ProjectDetail() {
                       </button>
                     </div>
                     <p className="task-description">{task.description}</p>
+                    
+                    <div className="task-divider"></div>
+                    
+                    <div className="task-dates">
+                      <div className="task-date-item">
+                        <Calendar size={14} />
+                        <span>Created: {formatDate(task.createdAt)}</span>
+                      </div>
+                      <div className="task-date-item">
+                        <Clock size={14} />
+                        <span>
+                          Due: {task.dueDate ? formatDate(task.dueDate) : 'No due date'}
+                        </span>
+                        {task.dueDate && (
+                          <span className="relative-date">({getRelativeDate(task.dueDate)})</span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="task-divider"></div>
+                    
                     <div className="task-actions">
                       {column.status !== 'new' && (
                         <button 

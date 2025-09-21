@@ -64,7 +64,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 // POST /api/tasks - Create new task
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { title, description, projectId, status } = req.body;
+    const { title, description, projectId, status, dueDate } = req.body;
 
     if (!title || !title.trim()) {
       return res.status(400).json({
@@ -84,7 +84,8 @@ router.post('/', async (req: Request, res: Response) => {
       title.trim(),
       description?.trim() || '',
       projectId,
-      status || 'new'
+      status || 'new',
+      dueDate ? new Date(dueDate) : undefined
     );
 
     return res.status(201).json({

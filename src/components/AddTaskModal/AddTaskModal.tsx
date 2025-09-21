@@ -16,7 +16,7 @@ interface AddTaskModalProps {
   projects: Project[];
   selectedProjectId?: string;
   onClose: () => void;
-  onAddTask: (title: string, description: string, projectId: string) => void;
+  onAddTask: (title: string, description: string, projectId: string, dueDate?: Date) => void;
 }
 
 const AddTaskModal: React.FC<AddTaskModalProps> = ({
@@ -30,9 +30,11 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
     title,
     description,
     projectId,
+    dueDate,
     setTitle,
     setDescription,
     setProjectId,
+    setDueDate,
     resetForm,
     validateForm,
     getSelectedProject,
@@ -41,7 +43,8 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onAddTask(title.trim(), description.trim(), projectId);
+      const dueDateObj = dueDate ? new Date(dueDate) : undefined;
+      onAddTask(title.trim(), description.trim(), projectId, dueDateObj);
       resetForm();
       onClose();
     }
@@ -86,6 +89,19 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
               placeholder="Enter task description..."
               className="add-task-modal-textarea"
               rows={3}
+            />
+          </div>
+
+          <div className="add-task-modal-field">
+            <label className="add-task-modal-label">
+              Due Date (Optional)
+            </label>
+            <input
+              type="datetime-local"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              className="add-task-modal-input"
+              min={new Date().toISOString().slice(0, 16)}
             />
           </div>
 

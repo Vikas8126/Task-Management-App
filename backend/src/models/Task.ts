@@ -6,6 +6,7 @@ export interface ITask extends Document {
   description: string;
   status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: mongoose.Types.ObjectId;
+  dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,6 +35,10 @@ const TaskSchema: Schema = new Schema(
       ref: 'Project',
       required: [true, 'Project ID is required'],
     },
+    dueDate: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -42,6 +47,10 @@ const TaskSchema: Schema = new Schema(
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
+        // Ensure dueDate is included in the response
+        if (ret.dueDate === null) {
+          delete ret.dueDate;
+        }
         return ret;
       },
     },

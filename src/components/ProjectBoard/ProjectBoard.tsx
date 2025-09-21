@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Calendar } from 'lucide-react';
 import { useProjectBoard } from './hooks/useProjectBoard';
+import { formatDate } from '../../utils/dateUtils';
 import './index.css';
 
 interface Project {
@@ -18,6 +20,7 @@ interface Task {
   description: string;
   status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
+  dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -91,6 +94,10 @@ const ProjectBoard: React.FC<ProjectBoardProps> = ({
                         <p className="project-board-card-description">
                           {project.description}
                         </p>
+                        <div className="project-board-card-date">
+                          <Calendar size={14} />
+                          <span>Created: {formatDate(project.createdAt)}</span>
+                        </div>
                       </div>
                     </div>
                   </div>

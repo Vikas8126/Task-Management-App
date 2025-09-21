@@ -13,10 +13,12 @@ export const useAddTaskModal = (projects: Project[], selectedProjectId?: string)
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [projectId, setProjectId] = useState(selectedProjectId || '');
+  const [dueDate, setDueDate] = useState('');
 
   const resetForm = () => {
     setTitle('');
     setDescription('');
+    setDueDate('');
     if (!selectedProjectId) {
       setProjectId('');
     }
@@ -34,9 +36,11 @@ export const useAddTaskModal = (projects: Project[], selectedProjectId?: string)
     title,
     description,
     projectId,
+    dueDate,
     setTitle,
     setDescription,
     setProjectId,
+    setDueDate,
     resetForm,
     validateForm,
     getSelectedProject,

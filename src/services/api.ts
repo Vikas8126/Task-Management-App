@@ -15,6 +15,7 @@ interface Task {
   description: string;
   status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
+  dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -168,6 +169,7 @@ export const projectAPI = {
       ...task,
       createdAt: new Date(task.createdAt),
       updatedAt: new Date(task.updatedAt),
+      dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
     })) || [];
   },
 
@@ -220,6 +222,7 @@ export const taskAPI = {
       ...task,
       createdAt: new Date(task.createdAt),
       updatedAt: new Date(task.updatedAt),
+      dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
     })) || [];
   },
 
@@ -236,17 +239,18 @@ export const taskAPI = {
       ...task,
       createdAt: new Date(task.createdAt),
       updatedAt: new Date(task.updatedAt),
+      dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
     })) || [];
   },
 
   // Create new task
-  async create(title: string, description: string, projectId: string): Promise<Task> {
+  async create(title: string, description: string, projectId: string, dueDate?: Date): Promise<Task> {
     const response = await fetch(`${API_BASE_URL}/tasks`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title, description, projectId }),
+      body: JSON.stringify({ title, description, projectId, dueDate }),
     });
 
     const result: ApiResponse<Task> = await response.json();
@@ -263,6 +267,7 @@ export const taskAPI = {
       ...result.data,
       createdAt: new Date(result.data.createdAt),
       updatedAt: new Date(result.data.updatedAt),
+      dueDate: result.data.dueDate ? new Date(result.data.dueDate) : undefined,
     };
   },
 
@@ -290,6 +295,7 @@ export const taskAPI = {
       ...result.data,
       createdAt: new Date(result.data.createdAt),
       updatedAt: new Date(result.data.updatedAt),
+      dueDate: result.data.dueDate ? new Date(result.data.dueDate) : undefined,
     };
   },
 
@@ -317,6 +323,7 @@ export const taskAPI = {
       ...result.data,
       createdAt: new Date(result.data.createdAt),
       updatedAt: new Date(result.data.updatedAt),
+      dueDate: result.data.dueDate ? new Date(result.data.dueDate) : undefined,
     };
   },
 
@@ -346,6 +353,7 @@ export const taskAPI = {
       ...task,
       createdAt: new Date(task.createdAt),
       updatedAt: new Date(task.updatedAt),
+      dueDate: task.dueDate ? new Date(task.dueDate) : undefined,
     })) || [];
   },
 };

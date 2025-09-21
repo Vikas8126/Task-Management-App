@@ -23,6 +23,7 @@ interface Task {
   description: string;
   status: 'new' | 'in-progress' | 'blocked' | 'completed';
   projectId: string;
+  dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -88,9 +89,9 @@ function HomePage() {
     }
   };
 
-  const addTask = async (title: string, description: string, projectId: string) => {
+  const addTask = async (title: string, description: string, projectId: string, dueDate?: Date) => {
     try {
-      const newTask = await taskAPI.create(title, description, projectId);
+      const newTask = await taskAPI.create(title, description, projectId, dueDate);
       setTasks([...tasks, newTask]);
     } catch (error) {
       console.error('Failed to create task:', error);

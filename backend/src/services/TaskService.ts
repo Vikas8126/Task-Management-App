@@ -37,7 +37,8 @@ export class TaskService {
     title: string,
     description: string,
     projectId: string,
-    status: 'new' | 'in-progress' | 'blocked' | 'completed' = 'new'
+    status: 'new' | 'in-progress' | 'blocked' | 'completed' = 'new',
+    dueDate?: Date
   ): Promise<ITask> {
     try {
       // Verify project exists
@@ -51,6 +52,7 @@ export class TaskService {
         description,
         status,
         projectId,
+        dueDate,
       });
       
       const savedTask = await task.save();
@@ -68,6 +70,7 @@ export class TaskService {
       description: string;
       status: 'new' | 'in-progress' | 'blocked' | 'completed';
       projectId: string;
+      dueDate: Date;
     }>
   ): Promise<ITask | null> {
     try {
