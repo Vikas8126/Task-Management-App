@@ -6,6 +6,7 @@ import { isTaskPastDue, formatDate, getRelativeDate } from '../../utils/dateUtil
 import Navbar from '../Navbar/Navbar';
 import AddTaskModal from '../AddTaskModal/AddTaskModal';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
+import ViewTaskModal from '../MoveTaskModal/MoveTaskModal';
 import './index.css';
 
 interface Project {
@@ -35,6 +36,8 @@ function ProjectDetail() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showViewTaskModal, setShowViewTaskModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,16 +77,6 @@ function ProjectDetail() {
     }
   };
 
-  const updateTaskStatus = async (taskId: string, newStatus: Task['status']) => {
-    try {
-      const updatedTask = await taskAPI.updateStatus(taskId, newStatus);
-      setTasks(tasks.map(task => 
-        task.id === taskId ? updatedTask : task
-      ));
-    } catch (error) {
-      console.error('Failed to update task status:', error);
-    }
-  };
 
   const deleteTask = async (taskId: string) => {
     try {
@@ -103,6 +96,22 @@ function ProjectDetail() {
     } catch (error) {
       console.error('Failed to delete project:', error);
     }
+  };
+
+  const handleSaveTask = async (taskId: string, updates: { title?: string; description?: string; status?: Task['status']; dueDate?: Date }) => {
+    try {
+      const updatedTask = await taskAPI.update(taskId, updates);
+      setTasks(tasks.map(task => 
+        task.id === taskId ? updatedTask : task
+      ));
+    } catch (error) {
+      console.error('Failed to update task:', error);
+    }
+  };
+
+  const openViewTaskModal = (task: Task) => {
+    setSelectedTask(task);
+    setShowViewTaskModal(true);
   };
 
   const getTasksByStatus = (status: Task['status']) => {
@@ -216,18 +225,10 @@ function ProjectDetail() {
                 {getTasksByStatus(column.status).map(task => (
                   <div key={task.id} className="task-card">
                     <div className="task-header">
-                      <div className="task-title-section">
-                        <h4 className="task-title">{task.title}</h4>
-                        {isTaskPastDue(task) && (
-                          <span className="past-due-tag">Past Due</span>
-                        )}
-                      </div>
-                      <button 
-                        className="delete-task-btn"
-                        onClick={() => deleteTask(task.id)}
-                      >
-                        ×
-                      </button>
+                      <h4 className="task-title">{task.title}</h4>
+                      {isTaskPastDue(task) && (
+                        <span className="past-due-tag">Past Due</span>
+                      )}
                     </div>
                     <p className="task-description">{task.description}</p>
                     
@@ -252,34 +253,12 @@ function ProjectDetail() {
                     <div className="task-divider"></div>
                     
                     <div className="task-actions">
-                      {column.status !== 'new' && (
-                        <button 
-                          className="move-left-btn"
-                          onClick={() => {
-                            const statuses: Task['status'][] = ['new', 'in-progress', 'blocked', 'completed'];
-                            const currentIndex = statuses.indexOf(column.status);
-                            if (currentIndex > 0) {
-                              updateTaskStatus(task.id, statuses[currentIndex - 1]);
-                            }
-                          }}
-                        >
-                          ←
-                        </button>
-                      )}
-                      {column.status !== 'completed' && (
-                        <button 
-                          className="move-right-btn"
-                          onClick={() => {
-                            const statuses: Task['status'][] = ['new', 'in-progress', 'blocked', 'completed'];
-                            const currentIndex = statuses.indexOf(column.status);
-                            if (currentIndex < statuses.length - 1) {
-                              updateTaskStatus(task.id, statuses[currentIndex + 1]);
-                            }
-                          }}
-                        >
-                          →
-                        </button>
-                      )}
+                      <button 
+                        className="move-task-btn"
+                        onClick={() => openViewTaskModal(task)}
+                      >
+                        View Task
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -299,17 +278,30 @@ function ProjectDetail() {
         />
       )}
 
-      {showDeleteModal && (
-        <DeleteConfirmationModal
-          isOpen={showDeleteModal}
-          project={project}
-          tasks={tasks}
-          onConfirm={deleteProject}
-          onCancel={() => setShowDeleteModal(false)}
-        />
-      )}
-    </div>
-  );
-}
+          {showDeleteModal && (
+            <DeleteConfirmationModal
+              isOpen={showDeleteModal}
+              project={project}
+              tasks={tasks}
+              onConfirm={deleteProject}
+              onCancel={() => setShowDeleteModal(false)}
+            />
+          )}
+
+          {showViewTaskModal && selectedTask && (
+            <ViewTaskModal
+              isOpen={showViewTaskModal}
+              task={selectedTask}
+              onSave={handleSaveTask}
+              onDelete={deleteTask}
+              onClose={() => {
+                setShowViewTaskModal(false);
+                setSelectedTask(null);
+              }}
+            />
+          )}
+        </div>
+      );
+    }
 
 export default ProjectDetail;

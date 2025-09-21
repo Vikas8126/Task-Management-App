@@ -1,0 +1,280 @@
+/* MoveTaskModal Styles */
+.move-task-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.move-task-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.move-task-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.move-task-modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.move-task-modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.move-task-modal-close-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.move-task-modal-body {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.move-task-modal-task-info {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.move-task-modal-task-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.move-task-modal-task-description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.move-task-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.move-task-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.move-task-modal-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.move-task-modal-current-status {
+  background: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.move-task-modal-select {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #374151;
+  transition: border-color 0.2s ease;
+}
+
+.move-task-modal-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.move-task-modal-input {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #374151;
+  transition: border-color 0.2s ease;
+}
+
+.move-task-modal-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.move-task-modal-textarea {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: #374151;
+  transition: border-color 0.2s ease;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.move-task-modal-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.move-task-modal-dates {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.move-task-modal-date-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.move-task-modal-date-item:last-child {
+  margin-bottom: 0;
+}
+
+.move-task-modal-relative-date {
+  font-style: italic;
+  color: #9ca3af;
+}
+
+.move-task-modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.move-task-modal-cancel-btn {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.move-task-modal-cancel-btn:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.move-task-modal-save-btn {
+  background: #3b82f6;
+  color: white;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.move-task-modal-save-btn:hover:not(:disabled) {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.move-task-modal-save-btn:disabled {
+  background: #9ca3af;
+  border-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.move-task-modal-delete-btn {
+  background: #ef4444;
+  color: white;
+  border: 1px solid #ef4444;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.move-task-modal-delete-btn:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .move-task-modal-content {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+  
+  .move-task-modal-header {
+    padding: 1rem 1rem 0 1rem;
+  }
+  
+  .move-task-modal-body {
+    padding: 0 1rem 1rem 1rem;
+  }
+  
+  .move-task-modal-actions {
+    flex-direction: column;
+  }
+  
+  .move-task-modal-cancel-btn,
+  .move-task-modal-save-btn {
+    width: 100%;
+  }
+}

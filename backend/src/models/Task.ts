@@ -47,10 +47,6 @@ const TaskSchema: Schema = new Schema(
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
-        // Ensure dueDate is included in the response
-        if (ret.dueDate === null) {
-          delete ret.dueDate;
-        }
         return ret;
       },
     },
