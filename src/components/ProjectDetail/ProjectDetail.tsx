@@ -124,7 +124,6 @@ function ProjectDetail() {
         <Navbar 
           totalTasks={0} 
           completedTasks={0} 
-          onSearch={(query) => console.log('Search:', query)}
         />
         <div className="loading-container">
           <div className="loading-spinner"></div>
@@ -140,7 +139,6 @@ function ProjectDetail() {
         <Navbar 
           totalTasks={0} 
           completedTasks={0} 
-          onSearch={(query) => console.log('Search:', query)}
         />
         <div className="error-container">
           <h2>Project not found</h2>
@@ -167,7 +165,6 @@ function ProjectDetail() {
       <Navbar 
         totalTasks={tasks.length} 
         completedTasks={getTasksByStatus('completed').length}
-        onSearch={(query) => console.log('Search:', query)} 
       />
       
       <div className="project-detail-container">

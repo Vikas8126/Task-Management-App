@@ -28,7 +28,6 @@ const Navbar: React.FC<NavbarProps> = ({
   const {
     searchQuery,
     searchResults,
-    isSearchFocused,
     showResults,
     handleSearchChange,
     handleSearchFocus,
