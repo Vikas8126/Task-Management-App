@@ -30,9 +30,10 @@ interface SearchResults {
 
 interface UseSearchProps {
   debounceMs?: number;
+  allProjects?: Project[]; // Add this for local fallback
 }
 
-export const useSearch = ({ debounceMs = 300 }: UseSearchProps = {}) => {
+export const useSearch = ({ debounceMs = 300, allProjects = [] }: UseSearchProps = {}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResults>({
     projects: [],
@@ -41,6 +42,17 @@ export const useSearch = ({ debounceMs = 300 }: UseSearchProps = {}) => {
     error: null,
   });
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  // Local project search fallback
+  const searchProjectsLocally = useCallback((query: string, projects: Project[]): Project[] => {
+    if (!query.trim()) return [];
+    
+    const lowercaseQuery = query.toLowerCase();
+    return projects.filter(project => 
+      project.name.toLowerCase().includes(lowercaseQuery) ||
+      project.description.toLowerCase().includes(lowercaseQuery)
+    );
+  }, []);
 
   // Debounced search function
   const performSearch = useCallback(async (query: string) => {
@@ -57,11 +69,11 @@ export const useSearch = ({ debounceMs = 300 }: UseSearchProps = {}) => {
     setSearchResults(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      // Search both projects and tasks in parallel
+      // Try API search first, fallback to local search for projects
       const [projects, tasks] = await Promise.all([
         projectAPI.search(query).catch(error => {
-          console.warn('Project search failed:', error);
-          return []; // Return empty array if project search fails
+          console.warn('Project API search failed, using local search:', error);
+          return searchProjectsLocally(query, allProjects);
         }),
         taskAPI.search(query).catch(error => {
           console.warn('Task search failed:', error);
@@ -83,7 +95,7 @@ export const useSearch = ({ debounceMs = 300 }: UseSearchProps = {}) => {
         error: error instanceof Error ? error.message : 'Search failed',
       }));
     }
-  }, []);
+  }, [allProjects, searchProjectsLocally]);
 
   // Debounce effect
   useEffect(() => {

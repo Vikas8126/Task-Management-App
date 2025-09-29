@@ -146,6 +146,7 @@ function HomePage() {
         completedTasks={completedTasks} 
         onProjectClick={handleProjectClick}
         onTaskClick={handleTaskClick}
+        projects={projects}
       />
       
           <ProjectBoard

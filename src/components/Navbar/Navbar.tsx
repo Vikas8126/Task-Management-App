@@ -9,12 +9,21 @@ interface NavbarProps {
   completedTasks: number;
   onProjectClick?: (projectId: string) => void;
   onTaskClick?: (taskId: string) => void;
+  projects?: Array<{
+    id: string;
+    name: string;
+    description: string;
+    color: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }>;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
   totalTasks,
   onProjectClick,
   onTaskClick,
+  projects = [],
 }) => {
   const {
     searchQuery,
@@ -25,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({
     handleSearchFocus,
     handleSearchBlur,
     clearSearch,
-  } = useSearch();
+  } = useSearch({ allProjects: projects });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
