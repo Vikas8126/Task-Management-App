@@ -1,29 +1,35 @@
 import React from "react";
-import { Search, Bell } from "lucide-react";
-import { useNavbar } from "./hooks/useNavbar";
+import { Search, Bell, X } from "lucide-react";
+import { useSearch } from "../../hooks/useSearch";
+import SearchResults from "../SearchResults/SearchResults";
 import "./index.css";
 
 interface NavbarProps {
   totalTasks: number;
   completedTasks: number;
-  onSearch: (query: string) => void;
+  onProjectClick?: (projectId: string) => void;
+  onTaskClick?: (taskId: string) => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
   totalTasks,
-  onSearch,
+  onProjectClick,
+  onTaskClick,
 }) => {
   const {
     searchQuery,
+    searchResults,
+    isSearchFocused,
+    showResults,
+    handleSearchChange,
     handleSearchFocus,
     handleSearchBlur,
-    handleSearchChange,
-  } = useNavbar();
+    clearSearch,
+  } = useSearch();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     handleSearchChange(value);
-    onSearch(value);
   };
 
   return (
@@ -36,7 +42,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {/* Search */}
         <div className="navbar-search-container">
-          <div>
+          <div className="navbar-search-wrapper">
             <Search className="navbar-search-icon" />
             <input
               type="text"
@@ -47,7 +53,27 @@ const Navbar: React.FC<NavbarProps> = ({
               onFocus={handleSearchFocus}
               onBlur={handleSearchBlur}
             />
+            {searchQuery && (
+              <button
+                className="navbar-search-clear"
+                onClick={clearSearch}
+                type="button"
+              >
+                <X className="clear-icon" />
+              </button>
+            )}
           </div>
+          
+          {showResults && (
+            <SearchResults
+              projects={searchResults.projects}
+              tasks={searchResults.tasks}
+              isLoading={searchResults.isLoading}
+              error={searchResults.error}
+              onProjectClick={onProjectClick}
+              onTaskClick={onTaskClick}
+            />
+          )}
         </div>
 
         {/* Controls */}

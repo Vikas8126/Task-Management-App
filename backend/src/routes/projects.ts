@@ -19,6 +19,23 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
+// GET /api/projects/search/:query - Search projects (must be before /:id route)
+router.get('/search/:query', async (req: Request, res: Response) => {
+  try {
+    const { query } = req.params;
+    const projects = await ProjectService.searchProjects(query);
+    return res.json({
+      success: true,
+      data: projects,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to search projects',
+    });
+  }
+});
+
 // GET /api/projects/:id - Get project by ID
 router.get('/:id', async (req: Request, res: Response) => {
   try {

@@ -120,4 +120,19 @@ export class ProjectService {
       throw new Error(`Failed to get project stats: ${error}`);
     }
   }
+
+  // Search projects
+  static async searchProjects(query: string): Promise<IProject[]> {
+    try {
+      const projects = await Project.find({
+        $or: [
+          { name: { $regex: query, $options: 'i' } },
+          { description: { $regex: query, $options: 'i' } },
+        ],
+      }).sort({ createdAt: -1 });
+      return projects;
+    } catch (error) {
+      throw new Error(`Failed to search projects: ${error}`);
+    }
+  }
 }

@@ -205,6 +205,22 @@ export const projectAPI = {
     
     return result.data;
   },
+
+  // Search projects
+  async search(query: string): Promise<Project[]> {
+    const response = await fetch(`${API_BASE_URL}/projects/search/${encodeURIComponent(query)}`);
+    const result: ApiResponse<Project[]> = await response.json();
+    
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to search projects');
+    }
+    
+    return result.data?.map(project => ({
+      ...project,
+      createdAt: new Date(project.createdAt),
+      updatedAt: new Date(project.updatedAt),
+    })) || [];
+  },
 };
 
 // Task API calls

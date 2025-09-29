@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import ProjectBoard from './components/ProjectBoard/ProjectBoard';
 import ProjectDetail from './components/ProjectDetail/ProjectDetail';
 import AddProjectModal from './components/AddProjectModal/AddProjectModal';
 import AddTaskModal from './components/AddTaskModal/AddTaskModal';
 import NotificationModal from './components/NotificationModal/NotificationModal';
+import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import { projectAPI, taskAPI } from './services/api';
 
 interface Project {
@@ -42,6 +43,7 @@ function App() {
 
 // Home Page Component
 function HomePage() {
+  const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
@@ -107,6 +109,18 @@ function HomePage() {
     setShowAddTaskModal(true);
   };
 
+  const handleProjectClick = (projectId: string) => {
+    navigate(`/projects/${projectId}`);
+  };
+
+  const handleTaskClick = (taskId: string) => {
+    // Find the task to get its project ID
+    const task = tasks.find(t => t.id === taskId);
+    if (task) {
+      navigate(`/projects/${task.projectId}`);
+    }
+  };
+
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(task => task.status === 'completed').length;
@@ -120,10 +134,7 @@ function HomePage() {
         alignItems: 'center', 
         justifyContent: 'center' 
       }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⏳</div>
-          <p style={{ color: '#6b7280' }}>Loading TaskFlow...</p>
-        </div>
+        <LoadingSpinner size="large" text="Loading TaskFlow..." />
       </div>
     );
   }
@@ -133,7 +144,8 @@ function HomePage() {
       <Navbar 
         totalTasks={totalTasks} 
         completedTasks={completedTasks} 
-        onSearch={(query) => console.log('Search:', query)} 
+        onProjectClick={handleProjectClick}
+        onTaskClick={handleTaskClick}
       />
       
           <ProjectBoard
